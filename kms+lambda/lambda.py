@@ -26,7 +26,7 @@ response = client.create_function(
     KMSKeyArn=f'{kms_key_arn}',
     MemorySize=256,
     Publish=True,
-    Role='arn:aws:iam::775362094965:role/service-role/lambda-weather-role-kq0evl4u',
+    Role='<insert IAM role for lambda>',
     Runtime='python3.7',
     Tags={
         'Environment': 'Dev',
