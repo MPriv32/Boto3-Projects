@@ -1,46 +1,33 @@
 import boto3
 import kms
-import os
-
-if os.path.isfile('.env'):
-    from dotenv import load_dotenv
-    load_dotenv()
 
 #Function creation variables
-bucket_name = os.getenv('bucket_name')
-bucket_arn = os.getenv('bucket_arn')
-file_path = os.getenv('file_path')
-handler = "app.handler"
-kms_key_arn = 
-runtime = ""
-
-#Lambda Environment Variables
-email_user = os.getenv('email_user')
-email_password = os.getenv('email_password')
+kms_key_arn = kms.key_arn.arn
 
 client = boto3.client('lambda')
 
 response = client.create_function(
     Code={
-        'S3Bucket': f'{bucket_name}',
-        'S3Key': f'{file_path}',
+        'S3Bucket': 'weather-update-project-bucket',
+        'S3Key': 'app.zip',
     },
     Description='Sends an email with a weather update',
     Environment={
         'Variables': {
-            'BUCKET': f'{bucket_name}',
+            'BUCKET': 'weather-update-project-bucket',
             'PREFIX': 'inbound',
-            'EMAIL_USER': f'{email_user}',
-            'EMAIL_PASSWORD': f'{email_password}',
+            'EMAIL_USER': '<insert email address>',
+            'EMAIL_PASSWORD': '<insert gmail api key>',
+            'WEATHER_API_KEY': '<insert weather api key>',
         },
     },
     FunctionName='weather-function',
-    Handler=f'{handler}',
+    Handler='app.handler',
     KMSKeyArn=f'{kms_key_arn}',
     MemorySize=256,
     Publish=True,
-    Role='arn:aws:iam::123456789012:role/lambda-role',
-    Runtime=f'{runtime}',
+    Role='arn:aws:iam::775362094965:role/service-role/lambda-weather-role-kq0evl4u',
+    Runtime='python3.7',
     Tags={
         'Environment': 'Dev',
     },
